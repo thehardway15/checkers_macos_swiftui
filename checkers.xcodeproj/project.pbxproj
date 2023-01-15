@@ -11,6 +11,10 @@
 		FE00E3CA297401AC0050CEC2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3C9297401AC0050CEC2 /* ContentView.swift */; };
 		FE00E3CC297401AE0050CEC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE00E3CB297401AE0050CEC2 /* Assets.xcassets */; };
 		FE00E3CF297401AE0050CEC2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE00E3CE297401AE0050CEC2 /* Preview Assets.xcassets */; };
+		FE00E3DA297402D20050CEC2 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3D9297402D20050CEC2 /* BoardView.swift */; };
+		FE00E3DC297402FF0050CEC2 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3DB297402FF0050CEC2 /* FieldView.swift */; };
+		FE00E3DE297403730050CEC2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3DD297403730050CEC2 /* Constants.swift */; };
+		FE00E3E0297407C30050CEC2 /* PieceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3DF297407C30050CEC2 /* PieceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +24,10 @@
 		FE00E3CB297401AE0050CEC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FE00E3CE297401AE0050CEC2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FE00E3D0297401AE0050CEC2 /* checkers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = checkers.entitlements; sourceTree = "<group>"; };
+		FE00E3D9297402D20050CEC2 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		FE00E3DB297402FF0050CEC2 /* FieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
+		FE00E3DD297403730050CEC2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		FE00E3DF297407C30050CEC2 /* PieceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +60,11 @@
 		FE00E3C6297401AC0050CEC2 /* checkers */ = {
 			isa = PBXGroup;
 			children = (
+				FE00E3D8297401EA0050CEC2 /* ViewModel */,
+				FE00E3D7297401DF0050CEC2 /* Models */,
+				FE00E3D6297401D30050CEC2 /* Views */,
 				FE00E3C7297401AC0050CEC2 /* checkersApp.swift */,
-				FE00E3C9297401AC0050CEC2 /* ContentView.swift */,
+				FE00E3DD297403730050CEC2 /* Constants.swift */,
 				FE00E3CB297401AE0050CEC2 /* Assets.xcassets */,
 				FE00E3D0297401AE0050CEC2 /* checkers.entitlements */,
 				FE00E3CD297401AE0050CEC2 /* Preview Content */,
@@ -67,6 +78,31 @@
 				FE00E3CE297401AE0050CEC2 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FE00E3D6297401D30050CEC2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FE00E3C9297401AC0050CEC2 /* ContentView.swift */,
+				FE00E3D9297402D20050CEC2 /* BoardView.swift */,
+				FE00E3DB297402FF0050CEC2 /* FieldView.swift */,
+				FE00E3DF297407C30050CEC2 /* PieceView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FE00E3D7297401DF0050CEC2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FE00E3D8297401EA0050CEC2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +175,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE00E3DE297403730050CEC2 /* Constants.swift in Sources */,
+				FE00E3DA297402D20050CEC2 /* BoardView.swift in Sources */,
+				FE00E3DC297402FF0050CEC2 /* FieldView.swift in Sources */,
+				FE00E3E0297407C30050CEC2 /* PieceView.swift in Sources */,
 				FE00E3CA297401AC0050CEC2 /* ContentView.swift in Sources */,
 				FE00E3C8297401AC0050CEC2 /* checkersApp.swift in Sources */,
 			);
