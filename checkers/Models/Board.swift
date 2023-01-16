@@ -39,5 +39,6 @@ class Board: NSObject {
     func move(_ piece: Piece, to position: CGPoint) {
         guard piece.player == currentPlayer else { return }
         piece.position(position)
+        currentPlayer = currentPlayer.opponent
     }
 }

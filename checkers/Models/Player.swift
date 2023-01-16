@@ -24,7 +24,7 @@ class Player: NSObject, GKGameModelPlayer {
     }
     
     var opponent: Player {
-        if color == .black {
+        if playerId == PlayerColor.black.rawValue {
             return Player.allPlayers[1]
         } else {
             return Player.allPlayers[0]

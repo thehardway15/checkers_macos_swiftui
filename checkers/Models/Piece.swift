@@ -12,7 +12,6 @@ class Piece: Identifiable, Codable, Equatable {
         return lhs.row == rhs.row && lhs.col == rhs.col
     }
     
-    
     var id: String = UUID().uuidString
     var row: Int
     var col: Int

@@ -17,8 +17,6 @@ struct FieldView: View {
             .fill(calculateColor())
             .frame(width: fieldSize, height: fieldSize)
             .overlay {
-                Text("\(row)/\(col)")
-                    .colorInvert()
                 GeometryReader { proxy -> Color in
                     board.update(frame: proxy.frame(in: .global), for: CGPoint(x: col, y: row))
                     return Color.clear

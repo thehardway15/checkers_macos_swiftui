@@ -27,14 +27,12 @@ class GameBoard: ObservableObject {
     
     func move(_ piece: Piece, to position: CGPoint) {
         objectWillChange.send()
-        
         board.move(piece, to: position)
     }
 }
 
 extension CGPoint: Hashable {
     public var hashValue: Int {
-        //This expression can be any of the arbitrary expression which fulfills the axiom above.
         return x.hashValue ^ y.hashValue
     }
 }

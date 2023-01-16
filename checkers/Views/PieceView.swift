@@ -42,7 +42,6 @@ struct PieceView: View {
     }
     
     func movePiece(to location: CGPoint) {
-        print("Call update \(location)")
         board.update(for: piece, where: location)
     }
 }
