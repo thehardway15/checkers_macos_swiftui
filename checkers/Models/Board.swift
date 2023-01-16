@@ -25,7 +25,7 @@ class Board: NSObject {
             
             for col in 0..<boardSize {
                 if (col - row) % 2 != 0 && row != 3 && row != 4 {
-                    var piece = Piece(row: row, col: col, player: row >= 5 ? Player.allPlayers[1] : Player.allPlayers[0])
+                    let piece = Piece(row: row, col: col, player: row >= 5 ? Player.allPlayers[1] : Player.allPlayers[0])
                     newRow.append(piece)
                 } else {
                     newRow.append(nil)

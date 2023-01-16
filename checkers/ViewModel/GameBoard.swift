@@ -31,8 +31,3 @@ class GameBoard: ObservableObject {
     }
 }
 
-extension CGPoint: Hashable {
-    public var hashValue: Int {
-        return x.hashValue ^ y.hashValue
-    }
-}

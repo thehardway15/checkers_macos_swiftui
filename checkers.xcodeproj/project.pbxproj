@@ -20,6 +20,7 @@
 		FE00E3E62974A18D0050CEC2 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3E52974A18D0050CEC2 /* Piece.swift */; };
 		FE00E3E82974A6C50050CEC2 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3E72974A6C50050CEC2 /* GameBoard.swift */; };
 		FE27CA0E2975B21B00D4DA1F /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27CA0D2975B21B00D4DA1F /* Move.swift */; };
+		FE27CA112975BD8400D4DA1F /* CGPoint+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27CA102975BD8400D4DA1F /* CGPoint+Hashable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		FE00E3E52974A18D0050CEC2 /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
 		FE00E3E72974A6C50050CEC2 /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		FE27CA0D2975B21B00D4DA1F /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
+		FE27CA102975BD8400D4DA1F /* CGPoint+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Hashable.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,11 +72,11 @@
 		FE00E3C6297401AC0050CEC2 /* checkers */ = {
 			isa = PBXGroup;
 			children = (
+				FE27CA0F2975BD7400D4DA1F /* lib */,
 				FE00E3D8297401EA0050CEC2 /* ViewModel */,
 				FE00E3D7297401DF0050CEC2 /* Models */,
 				FE00E3D6297401D30050CEC2 /* Views */,
 				FE00E3C7297401AC0050CEC2 /* checkersApp.swift */,
-				FE00E3DD297403730050CEC2 /* Constants.swift */,
 				FE00E3CB297401AE0050CEC2 /* Assets.xcassets */,
 				FE00E3D0297401AE0050CEC2 /* checkers.entitlements */,
 				FE00E3CD297401AE0050CEC2 /* Preview Content */,
@@ -118,6 +120,15 @@
 				FE00E3E72974A6C50050CEC2 /* GameBoard.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		FE27CA0F2975BD7400D4DA1F /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				FE27CA102975BD8400D4DA1F /* CGPoint+Hashable.swift */,
+				FE00E3DD297403730050CEC2 /* Constants.swift */,
+			);
+			path = lib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +205,7 @@
 				FE00E3DA297402D20050CEC2 /* BoardView.swift in Sources */,
 				FE00E3E82974A6C50050CEC2 /* GameBoard.swift in Sources */,
 				FE00E3DC297402FF0050CEC2 /* FieldView.swift in Sources */,
+				FE27CA112975BD8400D4DA1F /* CGPoint+Hashable.swift in Sources */,
 				FE00E3E0297407C30050CEC2 /* PieceView.swift in Sources */,
 				FE00E3E42974A1770050CEC2 /* Player.swift in Sources */,
 				FE00E3E62974A18D0050CEC2 /* Piece.swift in Sources */,
