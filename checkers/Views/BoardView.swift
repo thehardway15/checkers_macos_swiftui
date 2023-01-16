@@ -18,7 +18,7 @@ struct BoardView: View {
                     ForEach(0..<boardSize) { row in
                         GridRow {
                             ForEach(0..<boardSize) { col in
-                                FieldView(col: col, row: row)
+                                FieldView(col: col, row: row, board: board)
                             }
                         }
                     }
@@ -29,7 +29,7 @@ struct BoardView: View {
                     ForEach(0..<boardSize) { col in
                         let piece = board.board.grid[row][col]
                         if piece != nil {
-                            PieceView(piece: piece!, selectedPiece: $selectedPiece)
+                            PieceView(piece: piece!, selectedPiece: $selectedPiece, board: board)
                         }
                     }
                     

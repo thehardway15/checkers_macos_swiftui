@@ -11,6 +11,9 @@ struct PieceView: View {
     @State private var offset: CGSize = .zero
     let piece: Piece
     @Binding var selectedPiece: Piece?
+    private let offsetPosition: CGFloat = 32.0
+    private let offsetSpacing: CGFloat = 1.0
+    @ObservedObject var board: GameBoard
     
     var body: some View {
         Circle()
@@ -23,9 +26,9 @@ struct PieceView: View {
             .shadow(radius: 5, x: 5, y: 5)
             .offset(offset)
             .zIndex(selectedPiece == piece ? 3 : 2)
-            .position(x: CGFloat(piece.col) * (fieldSize + 1) + 32, y: CGFloat(piece.row) * (fieldSize + 1) + 32)
+            .position(x: CGFloat(piece.col) * (fieldSize + offsetSpacing) + offsetPosition, y: CGFloat(piece.row) * (fieldSize + offsetSpacing) + offsetPosition)
             .gesture(
-                DragGesture()
+                DragGesture(coordinateSpace: .global)
                     .onChanged { value in
                         self.offset = value.translation
                         self.selectedPiece = piece
@@ -39,6 +42,7 @@ struct PieceView: View {
     }
     
     func movePiece(to location: CGPoint) {
-        // Update the board state based on the piece's new location
+        print("Call update \(location)")
+        board.update(for: piece, where: location)
     }
 }

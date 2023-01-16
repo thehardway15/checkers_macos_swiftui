@@ -10,20 +10,23 @@ import SwiftUI
 struct FieldView: View {
     let col: Int
     let row: Int
+    @ObservedObject var board: GameBoard
     
     var body: some View {
         Rectangle()
             .fill(calculateColor())
             .frame(width: fieldSize, height: fieldSize)
+            .overlay {
+                Text("\(row)/\(col)")
+                    .colorInvert()
+                GeometryReader { proxy -> Color in
+                    board.update(frame: proxy.frame(in: .global), for: CGPoint(x: col, y: row))
+                    return Color.clear
+                }
+            }
     }
     
     func calculateColor() -> Color {
         return (col - row) % 2 == 0 ? .white : .black
-    }
-}
-
-struct FieldView_Previews: PreviewProvider {
-    static var previews: some View {
-        FieldView(col: 0, row: 0)
     }
 }

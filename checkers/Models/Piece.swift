@@ -49,8 +49,8 @@ class Piece: Identifiable, Codable, Equatable {
     }
     
     func position(_ position: CGPoint) {
-        row = Int(position.x)
-        col = Int(position.y)
+        row = Int(position.y)
+        col = Int(position.x)
     }
     
     func copy() -> Piece {
