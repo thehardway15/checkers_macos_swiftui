@@ -36,9 +36,57 @@ class Board: NSObject {
         }
     }
     
+    func possibleMoves(_ piece: Piece) -> [Move] {
+        var moves: [Move] = []
+        
+        if currentPlayer.playerId == PlayerColor.white.rawValue {
+            if piece.row - 1 >= 0 && piece.col - 1 >= 0 {
+                let fieldLeft = grid[piece.row - 1][piece.col - 1]
+                if fieldLeft == nil {
+                    moves.append(Move(row: piece.row - 1, col: piece.col - 1))
+                }
+            }
+            
+            if piece.row - 1 >= 0 && piece.col + 1 < 8 {
+                let fieldRight = grid[piece.row - 1][piece.col + 1]
+                if fieldRight == nil {
+                    moves.append(Move(row: piece.row - 1, col: piece.col + 1))
+                }
+            }
+        } else {
+            if piece.row + 1 < 8 && piece.col - 1 >= 0 {
+                let fieldLeft = grid[piece.row + 1][piece.col - 1]
+                if fieldLeft == nil {
+                    moves.append(Move(row: piece.row + 1, col: piece.col - 1))
+                }
+            }
+            
+            if piece.row + 1 < 8 && piece.col + 1 < 8 {
+                let fieldRight = grid[piece.row + 1][piece.col + 1]
+                if fieldRight == nil {
+                    moves.append(Move(row: piece.row + 1, col: piece.col + 1))
+                }
+            }
+        }
+        
+        return moves
+    }
+    
+    func canMove(_ piece: Piece, to position: CGPoint) -> Bool {
+        let possibleMoves = possibleMoves(piece)
+        let correctMove = possibleMoves.contains(where: { move in
+            move.row == Int(position.y) && move.col == Int(position.x)
+        })
+        
+        return correctMove
+    }
+    
     func move(_ piece: Piece, to position: CGPoint) {
         guard piece.player == currentPlayer else { return }
+        guard canMove(piece, to: position) else { return }
+        grid[piece.row][piece.col] = nil
         piece.position(position)
+        grid[Int(position.y)][Int(position.x)] = piece
         currentPlayer = currentPlayer.opponent
     }
 }

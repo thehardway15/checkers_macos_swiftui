@@ -15,9 +15,9 @@ struct BoardView: View {
         ZStack {
             Group {
                 Grid(horizontalSpacing:1, verticalSpacing: 1) {
-                    ForEach(0..<boardSize) { row in
+                    ForEach(0..<boardSize, id: \.self) { row in
                         GridRow {
-                            ForEach(0..<boardSize) { col in
+                            ForEach(0..<boardSize, id: \.self) { col in
                                 FieldView(col: col, row: row, board: board)
                             }
                         }
@@ -25,14 +25,14 @@ struct BoardView: View {
                 }
             }
             Group {
-                ForEach(0..<boardSize) { row in
-                    ForEach(0..<boardSize) { col in
+                ForEach(0..<boardSize, id: \.self) { row in
+                    ForEach(0..<boardSize, id: \.self) { col in
                         let piece = board.board.grid[row][col]
                         if piece != nil {
                             PieceView(piece: piece!, selectedPiece: $selectedPiece, board: board)
                         }
                     }
-                    
+
                 }
             }
         }
