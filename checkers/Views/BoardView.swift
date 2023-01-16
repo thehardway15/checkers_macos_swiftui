@@ -8,20 +8,36 @@
 import SwiftUI
 
 struct BoardView: View {
+    @StateObject private var board = GameBoard()
+    @State private var selectedPiece: Piece?
+    
     var body: some View {
-        Grid(horizontalSpacing:1, verticalSpacing: 1) {
-            ForEach(0..<boardSize) { row in
-                GridRow {
-                    ForEach(0..<boardSize) { col in
-                        if (col - row) % 2 != 0 && row != 3 && row != 4 {
-                            FieldView(col: col, row: row, piece: true, pieceColor: row >= 5 ? .white : .red)
-                        } else {
-                            FieldView(col: col, row: row)
+        ZStack {
+            Group {
+                Grid(horizontalSpacing:1, verticalSpacing: 1) {
+                    ForEach(0..<boardSize) { row in
+                        GridRow {
+                            ForEach(0..<boardSize) { col in
+                                FieldView(col: col, row: row)
+                            }
                         }
                     }
                 }
             }
+            Group {
+                ForEach(0..<boardSize) { row in
+                    ForEach(0..<boardSize) { col in
+                        let piece = board.board.grid[row][col]
+                        if piece != nil {
+                            PieceView(piece: piece!, selectedPiece: $selectedPiece)
+                        }
+                    }
+                    
+                }
+            }
         }
+        .fixedSize()
+        .preferredColorScheme(.dark)
     }
 }
 

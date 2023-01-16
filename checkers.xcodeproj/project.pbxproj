@@ -15,6 +15,10 @@
 		FE00E3DC297402FF0050CEC2 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3DB297402FF0050CEC2 /* FieldView.swift */; };
 		FE00E3DE297403730050CEC2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3DD297403730050CEC2 /* Constants.swift */; };
 		FE00E3E0297407C30050CEC2 /* PieceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3DF297407C30050CEC2 /* PieceView.swift */; };
+		FE00E3E22974A1660050CEC2 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3E12974A1660050CEC2 /* Board.swift */; };
+		FE00E3E42974A1770050CEC2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3E32974A1770050CEC2 /* Player.swift */; };
+		FE00E3E62974A18D0050CEC2 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3E52974A18D0050CEC2 /* Piece.swift */; };
+		FE00E3E82974A6C50050CEC2 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3E72974A6C50050CEC2 /* GameBoard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +32,10 @@
 		FE00E3DB297402FF0050CEC2 /* FieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		FE00E3DD297403730050CEC2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FE00E3DF297407C30050CEC2 /* PieceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceView.swift; sourceTree = "<group>"; };
+		FE00E3E12974A1660050CEC2 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		FE00E3E32974A1770050CEC2 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		FE00E3E52974A18D0050CEC2 /* Piece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
+		FE00E3E72974A6C50050CEC2 /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +102,9 @@
 		FE00E3D7297401DF0050CEC2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				FE00E3E12974A1660050CEC2 /* Board.swift */,
+				FE00E3E32974A1770050CEC2 /* Player.swift */,
+				FE00E3E52974A18D0050CEC2 /* Piece.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -101,6 +112,7 @@
 		FE00E3D8297401EA0050CEC2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				FE00E3E72974A6C50050CEC2 /* GameBoard.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -177,8 +189,12 @@
 			files = (
 				FE00E3DE297403730050CEC2 /* Constants.swift in Sources */,
 				FE00E3DA297402D20050CEC2 /* BoardView.swift in Sources */,
+				FE00E3E82974A6C50050CEC2 /* GameBoard.swift in Sources */,
 				FE00E3DC297402FF0050CEC2 /* FieldView.swift in Sources */,
 				FE00E3E0297407C30050CEC2 /* PieceView.swift in Sources */,
+				FE00E3E42974A1770050CEC2 /* Player.swift in Sources */,
+				FE00E3E62974A18D0050CEC2 /* Piece.swift in Sources */,
+				FE00E3E22974A1660050CEC2 /* Board.swift in Sources */,
 				FE00E3CA297401AC0050CEC2 /* ContentView.swift in Sources */,
 				FE00E3C8297401AC0050CEC2 /* checkersApp.swift in Sources */,
 			);

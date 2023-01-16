@@ -8,22 +8,13 @@
 import SwiftUI
 
 struct FieldView: View {
-    @State var color: Color = .white
-    var col: Int
-    var row: Int
-    var piece: Bool = false
-    var pieceColor: Color = .red
+    let col: Int
+    let row: Int
     
     var body: some View {
-        ZStack {
-            Rectangle()
-                .fill(calculateColor())
-                .frame(width: fieldSize, height: fieldSize)
-            
-            if piece {
-                PieceView(color: pieceColor)
-            }
-        }
+        Rectangle()
+            .fill(calculateColor())
+            .frame(width: fieldSize, height: fieldSize)
     }
     
     func calculateColor() -> Color {
@@ -33,7 +24,6 @@ struct FieldView: View {
 
 struct FieldView_Previews: PreviewProvider {
     static var previews: some View {
-        FieldView(color: .white, col: 0, row: 0)
-        FieldView(color: .white, col: 0, row: 0, piece: true, pieceColor: .red)
+        FieldView(col: 0, row: 0)
     }
 }
