@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+enum PieceDirection: String {
+    case up
+    case down
+    case both
+}
+
 class Piece: Identifiable, Codable, Equatable {
     static func == (lhs: Piece, rhs: Piece) -> Bool {
         return lhs.row == rhs.row && lhs.col == rhs.col
@@ -16,11 +22,13 @@ class Piece: Identifiable, Codable, Equatable {
     var row: Int
     var col: Int
     var player: Player
+    var direction: PieceDirection
     
     init(row: Int, col: Int, player: Player) {
         self.row = row
         self.col = col
         self.player = player
+        self.direction = player.playerId == PlayerColor.black.rawValue ? .down : .up
     }
     
     enum CodingKeys: String, CodingKey {
@@ -28,6 +36,7 @@ class Piece: Identifiable, Codable, Equatable {
         case row
         case col
         case player
+        case direction
     }
     
     required init(from decoder: Decoder) throws {
@@ -35,6 +44,8 @@ class Piece: Identifiable, Codable, Equatable {
         id = try values.decode(String.self, forKey: .id)
         row = try values.decode(Int.self, forKey: .row)
         col = try values.decode(Int.self, forKey: .col)
+        let directionRaw = try values.decode(String.self, forKey: .direction)
+        direction = PieceDirection(rawValue: directionRaw)!
         let playerId = try values.decode(Int.self, forKey: .player)
         player = Player.getById(id: PlayerColor(rawValue: playerId)!)
     }
@@ -45,6 +56,7 @@ class Piece: Identifiable, Codable, Equatable {
         try container.encode(row, forKey: .row)
         try container.encode(col, forKey: .col)
         try container.encode(player.playerId, forKey: .player)
+        try container.encode(direction.rawValue, forKey: .direction)
     }
     
     func position(_ position: CGPoint) {
@@ -55,5 +67,41 @@ class Piece: Identifiable, Codable, Equatable {
     func copy() -> Piece {
         let piece = Piece(row: self.row, col: self.col, player: self.player)
         return piece
+    }
+    
+    func nextLeft() -> CGPoint? {
+        let rowDirection = direction == .up ? -1 : 1
+        
+        if row + rowDirection >= 0 && col - 1 >= 0 {
+            return CGPoint(x: col - 1, y: row + rowDirection)
+        }
+        return nil
+    }
+    
+    func nextRight() -> CGPoint? {
+        let rowDirection = direction == .up ? -1 : 1
+        
+        if row + rowDirection >= 0 && col + 1 >= 0 {
+            return CGPoint(x: col + 1, y: row + rowDirection)
+        }
+        return nil
+    }
+    
+    func backLeft() -> CGPoint? {
+        let rowDirection = direction == .up ? 1 : -1
+        
+        if row + rowDirection >= 0 && col - 1 >= 0 {
+            return CGPoint(x: col - 1, y: row + rowDirection)
+        }
+        return nil
+    }
+    
+    func backRight() -> CGPoint? {
+        let rowDirection = direction == .up ? 1 : -1
+        
+        if row + rowDirection >= 0 && col + 1 >= 0 {
+            return CGPoint(x: col + 1, y: row + rowDirection)
+        }
+        return nil
     }
 }

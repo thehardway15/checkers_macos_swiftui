@@ -36,35 +36,56 @@ class Board: NSObject {
         }
     }
     
+    func getField(at pos: CGPoint) -> Piece? {
+        return grid[Int(pos.y)][Int(pos.x)]
+    }
+    
     func possibleMoves(_ piece: Piece) -> [Move] {
         var moves: [Move] = []
         
-        if currentPlayer.playerId == PlayerColor.white.rawValue {
-            if piece.row - 1 >= 0 && piece.col - 1 >= 0 {
-                let fieldLeft = grid[piece.row - 1][piece.col - 1]
-                if fieldLeft == nil {
-                    moves.append(Move(row: piece.row - 1, col: piece.col - 1))
+        // Simple piece move forward
+        
+        let leftPos = piece.nextLeft()
+        let rightPos = piece.nextRight()
+        var fieldLeft: Piece? = nil
+        var fieldRight: Piece? = nil
+        
+        if let leftPos = leftPos {
+            fieldLeft = getField(at: leftPos)
+            if fieldLeft == nil {
+                moves.append(Move(at: leftPos))
+            }
+        }
+        
+        if let rightPos = rightPos {
+            fieldRight = getField(at: rightPos)
+            if fieldRight == nil {
+                moves.append(Move(at: rightPos))
+            }
+        }
+        
+        // Simple piece beat opponent
+        
+        if let fieldLeft = fieldLeft {
+            if fieldLeft.player == currentPlayer.opponent {
+                let nextFieldPos = fieldLeft.backLeft()
+                if let nextFieldPos = nextFieldPos {
+                    let nextField = getField(at: nextFieldPos)
+                    if nextField == nil {
+                        moves.append(Move(at: nextFieldPos, beat: fieldLeft))
+                    }
                 }
             }
-            
-            if piece.row - 1 >= 0 && piece.col + 1 < 8 {
-                let fieldRight = grid[piece.row - 1][piece.col + 1]
-                if fieldRight == nil {
-                    moves.append(Move(row: piece.row - 1, col: piece.col + 1))
-                }
-            }
-        } else {
-            if piece.row + 1 < 8 && piece.col - 1 >= 0 {
-                let fieldLeft = grid[piece.row + 1][piece.col - 1]
-                if fieldLeft == nil {
-                    moves.append(Move(row: piece.row + 1, col: piece.col - 1))
-                }
-            }
-            
-            if piece.row + 1 < 8 && piece.col + 1 < 8 {
-                let fieldRight = grid[piece.row + 1][piece.col + 1]
-                if fieldRight == nil {
-                    moves.append(Move(row: piece.row + 1, col: piece.col + 1))
+        }
+        
+        if let fieldRight = fieldRight {
+            if fieldRight.player == currentPlayer.opponent {
+                let nextFieldPos = fieldRight.backRight()
+                if let nextFieldPos = nextFieldPos {
+                    let nextField = getField(at: nextFieldPos)
+                    if nextField == nil {
+                        moves.append(Move(at: nextFieldPos, beat: fieldRight))
+                    }
                 }
             }
         }
@@ -72,21 +93,29 @@ class Board: NSObject {
         return moves
     }
     
-    func canMove(_ piece: Piece, to position: CGPoint) -> Bool {
+    func canMove(_ piece: Piece, to position: CGPoint) -> Move? {
         let possibleMoves = possibleMoves(piece)
-        let correctMove = possibleMoves.contains(where: { move in
+        let correctMove = possibleMoves.first(where: { move in
             move.row == Int(position.y) && move.col == Int(position.x)
         })
         
         return correctMove
     }
     
+    func remove(_ piece: Piece) {
+        grid[piece.row][piece.col] = nil
+    }
+    
     func move(_ piece: Piece, to position: CGPoint) {
         guard piece.player == currentPlayer else { return }
-        guard canMove(piece, to: position) else { return }
-        grid[piece.row][piece.col] = nil
-        piece.position(position)
-        grid[Int(position.y)][Int(position.x)] = piece
-        currentPlayer = currentPlayer.opponent
+        if let move = canMove(piece, to: position) {
+            remove(piece)
+            piece.position(position)
+            grid[Int(position.y)][Int(position.x)] = piece
+            if let oponentPiece = move.beat {
+                remove(oponentPiece)
+            }
+            currentPlayer = currentPlayer.opponent
+        }
     }
 }
