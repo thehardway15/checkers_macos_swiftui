@@ -14,12 +14,14 @@ enum PlayerColor: Int {
 
 class Player: NSObject, GKGameModelPlayer {
     var playerId: Int
+    var playerType: PlayerColor
     var color: Color
     
     static var allPlayers: [Player] = [Player(.black), Player(.white)]
     
     init(_ playerId: PlayerColor) {
         self.playerId = playerId.rawValue
+        self.playerType = playerId
         self.color = playerId.rawValue == 0 ? .red : .white
     }
     

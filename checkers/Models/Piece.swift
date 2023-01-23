@@ -23,6 +23,7 @@ class Piece: Identifiable, Codable, Equatable {
     var col: Int
     var player: Player
     var direction: PieceDirection
+    var possibleMoves: [Move] = []
     
     init(row: Int, col: Int, player: Player) {
         self.row = row

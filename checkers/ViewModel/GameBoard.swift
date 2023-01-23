@@ -10,9 +10,19 @@ import SwiftUI
 class GameBoard: ObservableObject {
     var board: Board!
     private var frames: [CGPoint: CGRect] = [:]
+    public var winner: Player? {
+        return board.winner
+    }
+    public var currentPlayer: Player {
+        return board.currentPlayer
+    }
     
     init() {
         board = Board()
+    }
+    
+    func reset() {
+        
     }
     
     func update(frame: CGRect, for id: CGPoint) {

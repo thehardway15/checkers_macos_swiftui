@@ -11,7 +11,7 @@ import SwiftUI
 struct checkersApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            BoardView()
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
