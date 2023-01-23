@@ -40,6 +40,32 @@ class Board: NSObject {
         return grid[Int(pos.y)][Int(pos.x)]
     }
     
+    func searchBeat(for piece: Piece, next: CGPoint?) -> Move? {
+        if piece.player == currentPlayer.opponent {
+            if let nextFieldPos = next {
+                let nextField = getField(at: nextFieldPos)
+                if nextField == nil {
+                    var checkMove: CGPoint? = nextFieldPos
+                    var nextMove: Move? = nil
+                    var beatCount = 0
+                    
+                    repeat {
+                        let possibleBeatMove = possibleMoves(Piece(at: checkMove! , player: currentPlayer))
+                        nextMove = possibleBeatMove.first { move in
+                            move.beat != nil
+                        }
+                        checkMove = nextMove?.pos
+                        beatCount+=1
+                    } while nextMove != nil
+                    
+                    return Move(at: nextFieldPos, beat: piece, beatCount: beatCount)
+                }
+            }
+        }
+        
+        return nil
+    }
+    
     func possibleMoves(_ piece: Piece) -> [Move] {
         var moves: [Move] = []
         
@@ -67,28 +93,27 @@ class Board: NSObject {
         // Simple piece beat opponent
         
         if let fieldLeft = fieldLeft {
-            if fieldLeft.player == currentPlayer.opponent {
-                let nextFieldPos = fieldLeft.backLeft()
-                if let nextFieldPos = nextFieldPos {
-                    let nextField = getField(at: nextFieldPos)
-                    if nextField == nil {
-                        moves.append(Move(at: nextFieldPos, beat: fieldLeft))
-                    }
-                }
+            let move = searchBeat(for: fieldLeft, next: fieldLeft.backLeft())
+            if let move = move {
+                moves.append(move)
             }
         }
         
         if let fieldRight = fieldRight {
-            if fieldRight.player == currentPlayer.opponent {
-                let nextFieldPos = fieldRight.backRight()
-                if let nextFieldPos = nextFieldPos {
-                    let nextField = getField(at: nextFieldPos)
-                    if nextField == nil {
-                        moves.append(Move(at: nextFieldPos, beat: fieldRight))
-                    }
-                }
+            let move = searchBeat(for: fieldRight, next: fieldRight.backRight())
+            if let move = move {
+                moves.append(move)
             }
         }
+        
+        // beat backwards
+        // todo
+        
+        let max = moves.map { $0.beatCount }.max()
+        
+        moves = moves.filter({ move in
+            move.beatCount == max
+        })
         
         return moves
     }
@@ -115,7 +140,10 @@ class Board: NSObject {
             if let oponentPiece = move.beat {
                 remove(oponentPiece)
             }
-            currentPlayer = currentPlayer.opponent
+            if move.beatCount <= 1 {
+                currentPlayer = currentPlayer.opponent
+                print("Change player to: \(currentPlayer.color)")
+            }
         }
     }
 }

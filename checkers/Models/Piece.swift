@@ -31,6 +31,13 @@ class Piece: Identifiable, Codable, Equatable {
         self.direction = player.playerId == PlayerColor.black.rawValue ? .down : .up
     }
     
+    init(at pos: CGPoint, player: Player) {
+        self.row = Int(pos.y)
+        self.col = Int(pos.x)
+        self.player = player
+        self.direction = player.playerId == PlayerColor.black.rawValue ? .down : .up
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case row
@@ -64,6 +71,10 @@ class Piece: Identifiable, Codable, Equatable {
         col = Int(position.x)
     }
     
+    var pos: CGPoint {
+       return CGPoint(x: col, y: row)
+    }
+    
     func copy() -> Piece {
         let piece = Piece(row: self.row, col: self.col, player: self.player)
         return piece
@@ -72,7 +83,7 @@ class Piece: Identifiable, Codable, Equatable {
     func nextLeft() -> CGPoint? {
         let rowDirection = direction == .up ? -1 : 1
         
-        if row + rowDirection >= 0 && col - 1 >= 0 {
+        if row + rowDirection >= 0 && col - 1 >= 0 && row + rowDirection < 8 && col - 1 < 8 {
             return CGPoint(x: col - 1, y: row + rowDirection)
         }
         return nil
@@ -81,7 +92,7 @@ class Piece: Identifiable, Codable, Equatable {
     func nextRight() -> CGPoint? {
         let rowDirection = direction == .up ? -1 : 1
         
-        if row + rowDirection >= 0 && col + 1 >= 0 {
+        if row + rowDirection >= 0 && col + 1 >= 0 && row + rowDirection < 8 && col + 1 < 8{
             return CGPoint(x: col + 1, y: row + rowDirection)
         }
         return nil
@@ -90,7 +101,7 @@ class Piece: Identifiable, Codable, Equatable {
     func backLeft() -> CGPoint? {
         let rowDirection = direction == .up ? 1 : -1
         
-        if row + rowDirection >= 0 && col - 1 >= 0 {
+        if row + rowDirection >= 0 && col - 1 >= 0 && row + rowDirection < 8 && col - 1 < 8{
             return CGPoint(x: col - 1, y: row + rowDirection)
         }
         return nil
@@ -99,7 +110,7 @@ class Piece: Identifiable, Codable, Equatable {
     func backRight() -> CGPoint? {
         let rowDirection = direction == .up ? 1 : -1
         
-        if row + rowDirection >= 0 && col + 1 >= 0 {
+        if row + rowDirection >= 0 && col + 1 >= 0 && row + rowDirection < 8 && col + 1 < 8{
             return CGPoint(x: col + 1, y: row + rowDirection)
         }
         return nil
