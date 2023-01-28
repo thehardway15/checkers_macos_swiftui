@@ -9,20 +9,28 @@ import SwiftUI
 
 class GameBoard: ObservableObject {
     var board: Board!
+    var strategist: Strategist!
+    
     private var frames: [CGPoint: CGRect] = [:]
     public var winner: Player? {
         return board.winner
     }
-    public var currentPlayer: Player {
+    var currentPlayer: Player {
         return board.currentPlayer
     }
     
     init() {
         board = Board()
+        strategist = Strategist(board: board)
+        strategist.board = board
     }
     
     func reset() {
+        objectWillChange.send()
+        strategist = Strategist(board: board)
+        board.setup()
         
+        strategist.board = board
     }
     
     func update(frame: CGRect, for id: CGPoint) {
@@ -37,7 +45,32 @@ class GameBoard: ObservableObject {
     
     func move(_ piece: Piece, to position: CGPoint) {
         objectWillChange.send()
-        board.move(piece, to: position)
+        let changePlayer = board.move(piece, to: position)
+        if currentPlayer.playerType == .black {
+            processAIMove()
+        }
+        print(currentPlayer.playerType)
+    }
+    
+    func processAIMove() {
+        print("Process AI")
+        
+        DispatchQueue.global().async {
+            let strategistTime = CFAbsoluteTime()
+            guard let bestMove = self.strategist.bestMove else {
+                print("not best move")
+                return
+            }
+            
+            let delta = CFAbsoluteTime() - strategistTime
+            let aiTimeCeilling = 0.75
+            let delay = max(delta, aiTimeCeilling)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                print("Best move: row \(bestMove.row) col \(bestMove.col) beatCount \(bestMove.beatCount) \(bestMove.piece.player.playerType)")
+                self.move(bestMove.piece, to: bestMove.pos)
+            }
+        }
     }
 }
 

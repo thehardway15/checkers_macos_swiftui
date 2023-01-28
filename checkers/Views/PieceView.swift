@@ -16,29 +16,40 @@ struct PieceView: View {
     @ObservedObject var board: GameBoard
     
     var body: some View {
-        Circle()
-            .foregroundStyle(
-                piece.player.color.gradient.shadow(
-                    .inner(color: .black.opacity(0.8), radius: 2, x: -2, y: -2)
+        ZStack {
+            Circle()
+                .foregroundStyle(
+                    piece.player.color.gradient.shadow(
+                        .inner(color: .black.opacity(0.8), radius: 2, x: -2, y: -2)
+                    )
                 )
-            )
-            .frame(width: pieceSize, height: pieceSize)
-            .shadow(radius: 5, x: 5, y: 5)
-            .offset(offset)
-            .zIndex(selectedPiece == piece ? 3 : 2)
-            .position(x: CGFloat(piece.col) * (fieldSize + offsetSpacing) + offsetPosition, y: CGFloat(piece.row) * (fieldSize + offsetSpacing) + offsetPosition)
-            .gesture(
-                DragGesture(coordinateSpace: .global)
-                    .onChanged { value in
+                .frame(width: pieceSize, height: pieceSize)
+                .shadow(radius: 5, x: 5, y: 5)
+            
+            if piece.king {
+                Image(systemName: "crown")
+                    .foregroundColor(.black)
+            }
+        }
+        .offset(offset)
+        .zIndex(selectedPiece == piece ? 3 : 2)
+        .position(x: CGFloat(piece.col) * (fieldSize + offsetSpacing) + offsetPosition, y: CGFloat(piece.row) * (fieldSize + offsetSpacing) + offsetPosition)
+        .gesture(
+            DragGesture(coordinateSpace: .global)
+                .onChanged { value in
+                    if board.currentPlayer.playerType == .white {
                         self.offset = value.translation
                         self.selectedPiece = piece
                     }
-                    .onEnded { value in
+                }
+                .onEnded { value in
+                    if board.currentPlayer.playerType == .white {
                         self.offset = .zero
                         self.selectedPiece = nil
                         self.movePiece(to: value.location)
                     }
-            )
+                }
+        )
     }
     
     func movePiece(to location: CGPoint) {

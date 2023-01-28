@@ -20,6 +20,7 @@
 		FE00E3E82974A6C50050CEC2 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE00E3E72974A6C50050CEC2 /* GameBoard.swift */; };
 		FE27CA0E2975B21B00D4DA1F /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27CA0D2975B21B00D4DA1F /* Move.swift */; };
 		FE27CA112975BD8400D4DA1F /* CGPoint+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27CA102975BD8400D4DA1F /* CGPoint+Hashable.swift */; };
+		FE3994EE297F307A0015BE4A /* Strategist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3994ED297F307A0015BE4A /* Strategist.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		FE00E3E72974A6C50050CEC2 /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		FE27CA0D2975B21B00D4DA1F /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		FE27CA102975BD8400D4DA1F /* CGPoint+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Hashable.swift"; sourceTree = "<group>"; };
+		FE3994ED297F307A0015BE4A /* Strategist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strategist.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				FE00E3E32974A1770050CEC2 /* Player.swift */,
 				FE00E3E52974A18D0050CEC2 /* Piece.swift */,
 				FE27CA0D2975B21B00D4DA1F /* Move.swift */,
+				FE3994ED297F307A0015BE4A /* Strategist.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				FE00E3E42974A1770050CEC2 /* Player.swift in Sources */,
 				FE00E3E62974A18D0050CEC2 /* Piece.swift in Sources */,
 				FE00E3E22974A1660050CEC2 /* Board.swift in Sources */,
+				FE3994EE297F307A0015BE4A /* Strategist.swift in Sources */,
 				FE00E3C8297401AC0050CEC2 /* checkersApp.swift in Sources */,
 				FE27CA0E2975B21B00D4DA1F /* Move.swift in Sources */,
 			);
@@ -248,6 +252,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -271,7 +276,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Debug;
 		};
@@ -308,6 +313,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -334,9 +340,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = checkers/checkers.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"checkers/Preview Content\"";
 				DEVELOPMENT_TEAM = BRBRML9AMG;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -361,9 +369,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = checkers/checkers.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"checkers/Preview Content\"";
 				DEVELOPMENT_TEAM = BRBRML9AMG;
 				ENABLE_HARDENED_RUNTIME = YES;

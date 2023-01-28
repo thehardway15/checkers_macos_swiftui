@@ -13,17 +13,28 @@ enum PieceDirection: String {
     case both
 }
 
-class Piece: Identifiable, Codable, Equatable {
+class Piece: Equatable {
     static func == (lhs: Piece, rhs: Piece) -> Bool {
         return lhs.row == rhs.row && lhs.col == rhs.col
     }
     
-    var id: String = UUID().uuidString
     var row: Int
     var col: Int
     var player: Player
     var direction: PieceDirection
-    var possibleMoves: [Move] = []
+    var king: Bool = false
+    
+    func checkKing() {
+        if !king {
+            if player.playerType == .white && row == 0 {
+                king = true
+            }
+            
+            if player.playerType == .black && row == 8 {
+                king = true
+            }
+        }
+    }
     
     init(row: Int, col: Int, player: Player) {
         self.row = row
@@ -37,34 +48,6 @@ class Piece: Identifiable, Codable, Equatable {
         self.col = Int(pos.x)
         self.player = player
         self.direction = player.playerId == PlayerColor.black.rawValue ? .down : .up
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case row
-        case col
-        case player
-        case direction
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(String.self, forKey: .id)
-        row = try values.decode(Int.self, forKey: .row)
-        col = try values.decode(Int.self, forKey: .col)
-        let directionRaw = try values.decode(String.self, forKey: .direction)
-        direction = PieceDirection(rawValue: directionRaw)!
-        let playerId = try values.decode(Int.self, forKey: .player)
-        player = Player.getById(id: PlayerColor(rawValue: playerId)!)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(row, forKey: .row)
-        try container.encode(col, forKey: .col)
-        try container.encode(player.playerId, forKey: .player)
-        try container.encode(direction.rawValue, forKey: .direction)
     }
     
     func position(_ position: CGPoint) {
@@ -81,39 +64,201 @@ class Piece: Identifiable, Codable, Equatable {
         return piece
     }
     
-    func nextLeft() -> CGPoint? {
+    func nextLeft(step: Int = 1) -> CGPoint? {
         let rowDirection = direction == .up ? -1 : 1
         
-        if row + rowDirection >= 0 && col - 1 >= 0 && row + rowDirection < 8 && col - 1 < 8 {
-            return CGPoint(x: col - 1, y: row + rowDirection)
+        let x = col - (1 * step)
+        let y = row + (rowDirection * step)
+        
+        if y >= 0 && x >= 0 && y < 8 && x < 8 {
+            return CGPoint(x: x, y: y)
         }
         return nil
     }
     
-    func nextRight() -> CGPoint? {
+    func nextRight(step: Int = 1) -> CGPoint? {
         let rowDirection = direction == .up ? -1 : 1
         
-        if row + rowDirection >= 0 && col + 1 >= 0 && row + rowDirection < 8 && col + 1 < 8{
-            return CGPoint(x: col + 1, y: row + rowDirection)
+        let x = col + (1 * step)
+        let y = row + (rowDirection * step)
+        
+        if y >= 0 && x >= 0 && y < 8 && x < 8 {
+            return CGPoint(x: x, y: y)
         }
         return nil
     }
     
-    func backLeft() -> CGPoint? {
+    func backLeft(step: Int = 1) -> CGPoint? {
         let rowDirection = direction == .up ? 1 : -1
         
-        if row + rowDirection >= 0 && col - 1 >= 0 && row + rowDirection < 8 && col - 1 < 8{
-            return CGPoint(x: col - 1, y: row + rowDirection)
+        let x = col - (1 * step)
+        let y = row + (rowDirection * step)
+        
+        if y >= 0 && x >= 0 && y < 8 && x < 8 {
+            return CGPoint(x: x, y: y)
         }
         return nil
     }
     
-    func backRight() -> CGPoint? {
+    func backRight(step: Int = 1) -> CGPoint? {
         let rowDirection = direction == .up ? 1 : -1
         
-        if row + rowDirection >= 0 && col + 1 >= 0 && row + rowDirection < 8 && col + 1 < 8{
-            return CGPoint(x: col + 1, y: row + rowDirection)
+        let x = col + (1 * step)
+        let y = row + (rowDirection * step)
+        
+        if y >= 0 && x >= 0 && y < 8 && x < 8 {
+            return CGPoint(x: x, y: y)
         }
         return nil
+    }
+    
+    func getField(grid: [[Piece?]], at pos: CGPoint) -> Piece? {
+        return grid[Int(pos.y)][Int(pos.x)]
+    }
+    
+    func apply(_ move: Move, on grid: [[Piece?]]) -> [[Piece?]] {
+        var gridLocal = grid
+        gridLocal[move.piece.row][move.piece.col] = nil
+        move.piece.position(move.pos)
+        gridLocal[Int(move.pos.y)][Int(move.pos.x)] = move.piece
+        if let oponentPiece = move.beat {
+            gridLocal[Int(oponentPiece.row)][Int(oponentPiece.col)] = nil
+        }
+        
+        return gridLocal
+    }
+    
+    func checkBeat(grid: [[Piece?]], beatCount: Int, next: (Int) -> CGPoint?) -> Move? {
+        let nextPos = next(1)
+        if let nextPos = nextPos, let field = getField(grid: grid, at: nextPos) {
+            if field.player == player.opponent {
+                if let posAfterPiece = next(2) {
+                    if getField(grid: grid, at: posAfterPiece) == nil {
+                        return Move(for: self, at: posAfterPiece, beat: field, beatCount: beatCount + 1)
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    func possibleBeatMove(grid: [[Piece?]], beatCount: Int = 0) -> [Move] {
+        var moves: [Move] = []
+        
+        if let move = checkBeat(grid: grid, beatCount: beatCount, next: nextLeft) { moves.append(move) }
+        if let move = checkBeat(grid: grid, beatCount: beatCount, next: nextRight) { moves.append(move) }
+        if let move = checkBeat(grid: grid, beatCount: beatCount, next: backLeft) { moves.append(move) }
+        if let move = checkBeat(grid: grid, beatCount: beatCount, next: backRight) { moves.append(move) }
+        
+        let oldPos = pos
+        
+        moves.forEach { move in
+            let newGrid = apply(move, on: grid)
+            let nextMoves = possibleBeatMove(grid: newGrid, beatCount: beatCount + 1)
+            let max = nextMoves.map { $0.beatCount }.max()
+            if let max = max{
+                if max > move.beatCount {
+                    move.beatCount = max
+                }
+            }
+        }
+        
+        position(oldPos)
+        
+        return moves
+    }
+    
+    func possibleNormalMove(grid: [[Piece?]]) -> [Move] {
+        var moves: [Move] = []
+        // Simple piece move forward
+        
+        let leftPos = nextLeft()
+        let rightPos = nextRight()
+        var fieldLeft: Piece? = nil
+        var fieldRight: Piece? = nil
+        
+        
+        //MARK: - Move forwart regular piece
+        
+        if let leftPos = leftPos {
+            fieldLeft = getField(grid: grid, at: leftPos)
+            if fieldLeft == nil {
+                moves.append(Move(for: self, at: leftPos))
+            }
+        }
+        
+        if let rightPos = rightPos {
+            fieldRight = getField(grid: grid, at: rightPos)
+            if fieldRight == nil {
+                moves.append(Move(for: self, at: rightPos))
+            }
+        }
+        
+        return moves
+    }
+    
+    func possibleMoves(grid: [[Piece?]]) -> [Move] {
+        var moves: [Move] = []
+        
+        //MARK: - Normal move
+        if king {
+            moves += possibleKingNormalMoves(grid: grid)
+        } else {
+            moves += possibleNormalMove(grid: grid)
+        }
+        
+        //MARK: - Beat search
+        if king {
+            
+        } else {
+            moves += possibleBeatMove(grid: grid)
+        }
+        
+        //MARK: - filter only max beat count for piece
+        
+        let max = moves.map { $0.beatCount }.max()
+        
+        moves = moves.filter({ move in
+            move.beatCount == max
+        })
+        
+        return moves
+    }
+    
+    func searchCrossLineMove(grid: [[Piece?]], next: (Int) -> CGPoint?) -> [Move] {
+        var moves: [Move] = []
+        
+        var field: Piece? = nil
+        var step = 0
+        
+        var pos: CGPoint? = nil
+        repeat {
+            step += 1
+            pos = next(step)
+            if pos != nil {
+                field = getField(grid: grid, at: pos!)
+                if field == nil {
+                    moves.append(Move(for: self, at: pos!))
+                }
+            }
+        } while pos != nil || field != nil
+       
+        return moves
+    }
+    
+    func possibleKingNormalMoves(grid: [[Piece?]]) -> [Move] {
+        var moves: [Move] = []
+        
+        moves += searchCrossLineMove(grid: grid, next: nextLeft)
+        moves += searchCrossLineMove(grid: grid, next: nextRight)
+        moves += searchCrossLineMove(grid: grid, next: backLeft)
+        moves += searchCrossLineMove(grid: grid, next: backRight)
+        
+        return moves
+    }
+    
+    func moveForBeatCount(on grid: [[Piece?]], at maxBeat: Int) -> [Move] {
+        let moves = possibleMoves(grid: grid)
+        return moves.filter { $0.beatCount == maxBeat }
     }
 }
