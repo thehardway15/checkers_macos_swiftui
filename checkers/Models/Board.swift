@@ -52,19 +52,22 @@ class Board: NSObject {
             grid.append(newRow)
         }
         
-//        for row in 0..<boardSize {
-//            for col in 0..<boardSize {
-//                if (col - row) % 2 != 0 && row != 3 && row != 4 {
-//                    let piece = Piece(row: row, col: col, player: row >= 5 ? Player.allPlayers[1] : Player.allPlayers[0])
-//                    grid[row][col] = piece
-//                }
-//            }
-//        }
+        for row in 0..<boardSize {
+            for col in 0..<boardSize {
+                if (col - row) % 2 != 0 && row != 3 && row != 4 {
+                    let piece = Piece(row: row, col: col, player: row >= 5 ? Player.allPlayers[1] : Player.allPlayers[0])
+                    grid[row][col] = piece
+                }
+            }
+        }
         
-        grid[0][7] = Piece(row: 0, col: 7, player: Player.allPlayers[0])
-        grid[2][3] = Piece(row: 2, col: 3, player: Player.allPlayers[0])
-        grid[4][3] = Piece(row: 4, col: 3, player: Player.allPlayers[0])
-        grid[5][4] = Piece(row: 5, col: 4, player: Player.allPlayers[1])
+//        grid[0][7] = Piece(row: 0, col: 7, player: Player.allPlayers[0])
+//        grid[1][2] = Piece(row: 1, col: 2, player: Player.allPlayers[0])
+//        grid[4][3] = Piece(row: 4, col: 3, player: Player.allPlayers[0])
+//        var white = Piece(row: 7, col: 6, player: Player.allPlayers[1])
+//        white.king = true
+//
+//        grid[7][6] = white
 
     }
     

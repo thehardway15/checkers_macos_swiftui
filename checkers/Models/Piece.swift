@@ -117,7 +117,7 @@ class Piece: Equatable {
     }
     
     func apply(_ move: Move, on grid: [[Piece?]]) -> [[Piece?]] {
-        var gridLocal = grid
+        var gridLocal = grid.map { $0 }
         gridLocal[move.piece.row][move.piece.col] = nil
         move.piece.position(move.pos)
         gridLocal[Int(move.pos.y)][Int(move.pos.x)] = move.piece
@@ -140,6 +140,66 @@ class Piece: Equatable {
             }
         }
         return nil
+    }
+    
+    func checkKingBeat(grid: [[Piece?]], beatCount: Int, next: (Int) -> CGPoint?) -> [Move] {
+        var moves: [Move] = []
+        
+        var field: Piece? = nil
+        var emptyField: Piece? = nil
+        var step = 0
+        
+        var pos: CGPoint? = nil
+        repeat {
+            step += 1
+            pos = next(step)
+            if pos != nil {
+                field = getField(grid: grid, at: pos!)
+            }
+        } while pos != nil && field == nil
+        
+        if pos != nil && field != nil && field?.player != self.player {
+            repeat {
+                step += 1
+                pos = next(step)
+                if pos != nil {
+                    emptyField = getField(grid: grid, at: pos!)
+                    if emptyField == nil {
+                        moves.append(Move(for: self, at: pos!, beat: field!, beatCount: beatCount + 1))
+                    }
+                }
+            } while pos != nil && emptyField == nil
+        }
+        
+        return moves
+    }
+    
+    func possibleKingBeatMove(grid: [[Piece?]], beatCount: Int = 0) -> [Move] {
+        var moves: [Move] = []
+        
+        checkKingBeat(grid: grid, beatCount: beatCount, next: nextLeft).forEach { move in moves.append(move) }
+        checkKingBeat(grid: grid, beatCount: beatCount, next: nextRight).forEach { move in moves.append(move) }
+        checkKingBeat(grid: grid, beatCount: beatCount, next: backLeft).forEach { move in moves.append(move) }
+        checkKingBeat(grid: grid, beatCount: beatCount, next: backRight).forEach { move in moves.append(move) }
+        
+        debugPrint(moves)
+        
+        let oldPos = pos
+        
+        moves.forEach { move in
+            let newGrid = apply(move, on: grid)
+            let nextMoves = possibleKingBeatMove(grid: newGrid, beatCount: beatCount + 1)
+            let max = nextMoves.map { $0.beatCount }.max()
+            if let max = max{
+                if max > move.beatCount {
+                    move.beatCount = max
+                }
+            }
+        }
+        
+        position(oldPos)
+        
+        return moves
     }
     
     func possibleBeatMove(grid: [[Piece?]], beatCount: Int = 0) -> [Move] {
@@ -209,7 +269,7 @@ class Piece: Equatable {
         
         //MARK: - Beat search
         if king {
-            
+            moves += possibleKingBeatMove(grid: grid)
         } else {
             moves += possibleBeatMove(grid: grid)
         }
@@ -241,7 +301,7 @@ class Piece: Equatable {
                     moves.append(Move(for: self, at: pos!))
                 }
             }
-        } while pos != nil || field != nil
+        } while pos != nil && field == nil
        
         return moves
     }
