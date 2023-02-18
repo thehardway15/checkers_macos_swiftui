@@ -1,5 +1,9 @@
 #  Checkers
 
+## Requirements
+
+MacOS 13+
+
 ## Technology
 
 - GameplayKit
